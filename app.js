@@ -16,16 +16,23 @@ function collectKeywordsFromMonthlySheets() {
   var listOfSheetsWithoutMainSheet =
     removeMainSheetFromListOfSheets(sheetNames);
 
+  pushKeywordsFromSheetsToOneArray(listOfSheetsWithoutMainSheet, keywordList);
+
+  allKeywords = [].concat.apply([], keywordList);
+
+  return allKeywords;
+}
+
+function pushKeywordsFromSheetsToOneArray(
+  listOfSheetsWithoutMainSheet,
+  keywordList
+) {
   for (var i = 0; i < listOfSheetsWithoutMainSheet.length; i++) {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
       listOfSheetsWithoutMainSheet[i]
     );
     keywordList.push(sheet.getRange("A2:A").getValues());
   }
-
-  allKeywords = [].concat.apply([], keywordList);
-
-  return allKeywords;
 }
 
 function removeMainSheetFromListOfSheets(sheetNames) {
