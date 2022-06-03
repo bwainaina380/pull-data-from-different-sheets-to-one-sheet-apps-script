@@ -1,5 +1,5 @@
 function writeUniqueKeywordsToMainSheet() {
-  uniqueKeywords = collectKeywordsFromMonthlySheets();
+  keywordsFromAllSheets = collectKeywordsFromMonthlySheets();
   mainSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
     "Keyword Tracking Sheet"
   );
@@ -7,8 +7,8 @@ function writeUniqueKeywordsToMainSheet() {
   mainSheet.getRange("A2:A").clearContent();
 
   mainSheet
-    .getRange("A2:A".concat(uniqueKeywords.length + 1))
-    .setValues(uniqueKeywords)
+    .getRange("A2:A".concat(keywordsFromAllSheets.length + 1))
+    .setValues(keywordsFromAllSheets)
     .removeDuplicates();
 }
 
