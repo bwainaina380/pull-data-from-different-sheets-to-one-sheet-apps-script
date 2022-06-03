@@ -13,15 +13,12 @@ function collectKeywordsFromMonthlySheets() {
   var keywordList = new Array();
   var sheetNames = getSheetNames();
 
-  for (var i = 0; i < sheetNames.length; i++) {
-    if (sheetNames[i] === "Keyword Tracking Sheet") {
-      sheetNames.splice(i, 1);
-    }
-  }
+  var listOfSheetsWithoutMainSheet =
+    removeMainSheetFromListOfSheets(sheetNames);
 
-  for (var i = 0; i < sheetNames.length; i++) {
+  for (var i = 0; i < listOfSheetsWithoutMainSheet.length; i++) {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-      sheetNames[i]
+      listOfSheetsWithoutMainSheet[i]
     );
     keywordList.push(sheet.getRange("A2:A").getValues());
   }
@@ -29,6 +26,15 @@ function collectKeywordsFromMonthlySheets() {
   allKeywords = [].concat.apply([], keywordList);
 
   return allKeywords;
+}
+
+function removeMainSheetFromListOfSheets(sheetNames) {
+  for (var i = 0; i < sheetNames.length; i++) {
+    if (sheetNames[i] === "Keyword Tracking Sheet") {
+      sheetNames.splice(i, 1);
+    }
+  }
+  return sheetNames;
 }
 
 function writeUniqueKeywordsToMainSheet() {
