@@ -30,3 +30,15 @@ function collectKeywordsFromMonthlySheets() {
 
   return allKeywords;
 }
+
+function writeUniqueKeywordsToMainSheet() {
+  uniqueKeywords = collectKeywordsFromMonthlySheets();
+  mainSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+    "Keyword Tracking Sheet"
+  );
+  mainSheet.getRange("A2:A").clearContent();
+  mainSheet
+    .getRange("A2:A".concat(uniqueKeywords.length + 1))
+    .setValues(uniqueKeywords)
+    .removeDuplicates();
+}
