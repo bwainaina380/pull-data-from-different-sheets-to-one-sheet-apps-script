@@ -3,7 +3,9 @@ function writeUniqueKeywordsToMainSheet() {
   mainSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
     "Keyword Tracking Sheet"
   );
+
   mainSheet.getRange("A2:A").clearContent();
+
   mainSheet
     .getRange("A2:A".concat(uniqueKeywords.length + 1))
     .setValues(uniqueKeywords)
@@ -13,9 +15,10 @@ function writeUniqueKeywordsToMainSheet() {
 function collectKeywordsFromMonthlySheets() {
   var keywordList = new Array();
   var sheetNames = getSheetNames();
-
-  var listOfSheetsWithoutMainSheet =
-    removeMainSheetFromListOfSheets(sheetNames);
+  var listOfSheetsWithoutMainSheet = removeMainSheetFromListOfSheets(
+    sheetNames,
+    "Keyword Tracking Sheet"
+  );
 
   pushKeywordsFromSheetsToOneArray(listOfSheetsWithoutMainSheet, keywordList);
 
@@ -35,9 +38,9 @@ function getSheetNames() {
   return sheetArray;
 }
 
-function removeMainSheetFromListOfSheets(sheetNames) {
+function removeMainSheetFromListOfSheets(sheetNames, mainSheetName) {
   for (var i = 0; i < sheetNames.length; i++) {
-    if (sheetNames[i] === "Keyword Tracking Sheet") {
+    if (sheetNames[i] === mainSheetName) {
       sheetNames.splice(i, 1);
     }
   }
@@ -53,6 +56,7 @@ function pushKeywordsFromSheetsToOneArray(
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
       listOfSheetsWithoutMainSheet[i]
     );
+
     keywordList.push(sheet.getRange("A2:A").getValues());
   }
 }
